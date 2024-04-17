@@ -9,6 +9,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import { CiSquarePlus } from "react-icons/ci";
+import { PlusOne } from '@mui/icons-material';
+import { FaPlus } from 'react-icons/fa';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -68,40 +70,49 @@ export default function SearchAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h6"
+            variant="body"
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             onClick={()=>navigate('/')}
           >
-            BLOGS
+           HOME
           </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-            onClick={()=>navigate('/blogs/addABlog')}
-          >
-            <CiSquarePlus sx={{marginTop:'10px'}}></CiSquarePlus> Add A Blog
-          </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-            onClick={()=>navigate('/register')}
-          >
-            <CiSquarePlus sx={{marginTop:'10px'}}></CiSquarePlus>REGISTER
-          </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-            onClick={()=>navigate('/login')}
-          >LOGIN
-          </Typography>
+    
+
+          <Box display="flex" justifyContent="space-between" >
+              <Typography
+                variant="body"
+                noWrap
+                component="div"
+                sx={{display:'flex' , flexGrow: 1,alignItems:'center',marginRight:'20px'}}
+                onClick={()=>navigate('/blogs/addABlog')}
+              >
+                <CiSquarePlus ></CiSquarePlus> Blog
+              </Typography>
+              <Typography
+                variant="body"
+                noWrap
+                ml="3"
+                component="div"
+                sx={{display:'flex', flexGrow: 1,alignItems:'center',marginRight:'20px'}}
+                onClick={()=>navigate('/register')}
+              >
+                <CiSquarePlus ></CiSquarePlus>REGISTER
+              </Typography>
+              <Typography
+                variant="body"
+                noWrap
+                ml="3"
+                component="div"
+                sx={{display:'flex',flexGrow: 1,alignItems:'center'}}
+                onClick={()=>navigate('/login')}
+              >LOGIN
+              </Typography>
+
+          </Box>
+
+         
 
           <Search>
             <SearchIconWrapper>

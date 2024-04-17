@@ -35,8 +35,25 @@ export const blogsApi = apiSlice.injectEndpoints({
                 }
             },
        }),
+       addAReview: builder.mutation({
+        query: (data) => ({
+            url: `/blogs/${data.blogId}/reviews`,
+            method: "POST",
+            body: data,
+        }),
+
+        async onQueryStarted(arg, { queryFulfilled }) {
+            try {
+                const result = await queryFulfilled;
+                console.log(result,":result")
+            
+            } catch (err) {
+                console.log(err)
+            }
+        },
+       }),
        invalidatedTags:['Blogs']
     }),
 });
 
-export const { useGetAllBlogsQuery,useGetSpecificBlogQuery,useAddBlogMutation } = blogsApi;
+export const { useGetAllBlogsQuery,useGetSpecificBlogQuery,useAddBlogMutation,useAddAReviewMutation } = blogsApi;

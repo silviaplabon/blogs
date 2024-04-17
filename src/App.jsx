@@ -8,64 +8,26 @@ import Login from './pages/login';
 import BlogDetails from './components/blogs/blogDetails';
 import AddABlog from './components/blogs/addABlog'
 import Home from './pages/home'
-import PublicRoute from './routes/publicRoute';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes
-} from 'react-router-dom';
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import useAuth from './hooks/useAuth';
 
 function App() {
     const authChecked = useAuthCheck();
+    const isLoggedIn = useAuth();
 
     return !authChecked ? (
         <div>Checking authentication....</div>
     ) : (
-        <Router>
-            <Routes>
-                <Route
-                    path="/login"
-                    element={
-                        <PublicRoute>
-                            <Login />
-                        </PublicRoute>
-                    }
-                />
-                 <Route
-                    path="/"
-                    element={
-                        <PublicRoute>
-                            <Home/>
-                        </PublicRoute>
-                    }
-                />
-                <Route
-                    path="/register"
-                    element={
-                        <PublicRoute>
-                            <Register />
-                        </PublicRoute>
-                    }
-                />
-                <Route
-                    path="/blog/:id"
-                    element={
-                        <PrivateRoute>
-                            <BlogDetails />
-                        </PrivateRoute>
-                    }
-                />
-                 <Route
-                    path="/blog/addABlog"
-                    element={
-                        <PrivateRoute>
-                           <AddABlog></AddABlog>
-                        </PrivateRoute>
-                    }
-                />
-            </Routes>
-        </Router>
+        <BrowserRouter>
+        <Routes>
+            <Route index path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />      
+              <Route path="/blogs/:id" element={<BlogDetails />} />
+              <Route path="/blog/addABlog" element={<AddABlog/>} />
+              <Route path="/blogs"  element={<Home />} />
+              <Route path="/"  element={<Home />} />
+        </Routes>
+    </BrowserRouter>
     );
 }
 export default App

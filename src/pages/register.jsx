@@ -70,7 +70,7 @@ const Register = () => {
               errors={errors}
             />
                      
-             <CustomCheckbox  control={control} labelName="I've read and agree with terms of service and privacy policy"  name=" isAgreedWithTerms"></CustomCheckbox>
+             <CustomCheckbox  control={control} labelName="I've read and agree with terms of service and privacy policy"  name="isAgreedWithTerms"></CustomCheckbox>
              <Button
               variant="contained"
               mb={1}
