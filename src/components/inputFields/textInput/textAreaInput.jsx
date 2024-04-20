@@ -39,7 +39,7 @@ const TextAreaInput = (({ labelName,
         line-height: 1.5;
         padding: 8px 12px;
         border-radius: 8px;
-        color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+        color: 'white';
         background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
         border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
         box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
@@ -60,7 +60,7 @@ const TextAreaInput = (({ labelName,
       );
     return (
       <>
-        <InputLabel sx={{ marginTop:'0.6rem!important',marginBottom:'0.3rem'}} >{labelName}</InputLabel>
+        <InputLabel sx={{ marginTop:'1rem!important',fontSize:'14px!important',color:'white!important',marginBottom:'0.3rem'}} >{labelName}</InputLabel>
         <Controller
           name={name}
           control={control}

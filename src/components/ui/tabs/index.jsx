@@ -13,11 +13,12 @@ const CustomTab = ({tabs,selectedTab,setSelectedTab}) => {
         variant="scrollable"
         allowScrollButtonsMobile
         aria-label="Tab"
+        sx={{color:'white'}}
       >
         {
             // eslint-disable-next-line react/prop-types
             tabs.map((tabItem,index)=>{
-                return   (<Tab pl={0} key={index} label={tabItem} />)
+                return   (<Tab pl={0} key={index} label={tabItem} sx={{color:'white'}}/>)
             })
         }
       </Tabs>

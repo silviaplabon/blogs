@@ -7,6 +7,10 @@ import { Box, Button, Grid } from "@mui/material";
 
 import { MdPunchClock} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { FcRatings } from "react-icons/fc";
+import { CiEdit } from "react-icons/ci";
+import { Edit } from "@mui/icons-material";
+import { MdFavorite } from "react-icons/md";
 
 // eslint-disable-next-line react/prop-types
 const VerticalCard = ({ blog,height}) => {
@@ -14,6 +18,7 @@ const VerticalCard = ({ blog,height}) => {
   console.log(blog,"DATA");
   const navigate = useNavigate();
   console.log(height)
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
     <Box sx={{ position: "relative"}} className="mt-1" onClick={()=> navigate(`/blogs/${blog?._id}`)}>
@@ -36,9 +41,17 @@ const VerticalCard = ({ blog,height}) => {
           <Typography variant="h6" mt={1} sx={{fontSize:'16px'}}>
             {blog?.title}
           </Typography>
-          <Typography variant="body1" mt={1}>
-            <MdPunchClock></MdPunchClock> Posted on November 8,2016
+          
+          <Box display="flex" justifyContent="space-between" mt="1">
+            <Typography variant="body1">
+            <MdPunchClock></MdPunchClock>{blog?.createdTime ?new Date(blog?.createdTime ).toLocaleDateString(undefined,options):''}
           </Typography>
+        
+             <FcRatings></FcRatings>12
+             <CiEdit sx={{marginLeft:'10px'}} onClick={()=> navigate(`/blogs/edit/${blog?._id}`)}/>
+            <MdFavorite></MdFavorite>
+        
+            </Box>
         </CardContent>
       
       </Grid>

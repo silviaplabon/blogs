@@ -11,6 +11,13 @@ import { useNavigate } from 'react-router-dom';
 import { CiSquarePlus } from "react-icons/ci";
 import { PlusOne } from '@mui/icons-material';
 import { FaPlus } from 'react-icons/fa';
+import useAuth from '../../hooks/useAuth';
+import { MenuItem } from '@mui/material';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import { useState } from 'react';
+
+import { categories } from '../../utils/categories';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,9 +63,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchAppBar() {
   const navigate=useNavigate()
+  const isLoggedIn = useAuth();
+  const [anchorEl, setAnchorEl] =useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{backgroundColor:'#005652'}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -81,19 +97,56 @@ export default function SearchAppBar() {
     
 
           <Box display="flex" justifyContent="space-between" >
+          <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+        sx={{color:'white',marginRight:'20px'}}
+      >
+        Categories
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        {
+        categories?.map((item,index)=>{
+          return(
+            <MenuItem key={index} onClick={handleClose} sx={{paddingX:'30px'}}>
+            {item.logo} <Typography sx={{marginLeft:'20px'}}>
+            {item.value}
+              </Typography>
+            </MenuItem>
+          )
+        })}
+
+
+      </Menu>
               <Typography
                 variant="body"
                 noWrap
                 component="div"
+                ml="10"
                 sx={{display:'flex' , flexGrow: 1,alignItems:'center',marginRight:'20px'}}
                 onClick={()=>navigate('/blogs/addABlog')}
               >
                 <CiSquarePlus ></CiSquarePlus> Blog
               </Typography>
-              <Typography
+              {
+                !isLoggedIn ?
+                <>
+                 <Typography
                 variant="body"
                 noWrap
-                ml="3"
+                ml="5"
                 component="div"
                 sx={{display:'flex', flexGrow: 1,alignItems:'center',marginRight:'20px'}}
                 onClick={()=>navigate('/register')}
@@ -103,12 +156,21 @@ export default function SearchAppBar() {
               <Typography
                 variant="body"
                 noWrap
-                ml="3"
                 component="div"
                 sx={{display:'flex',flexGrow: 1,alignItems:'center'}}
                 onClick={()=>navigate('/login')}
               >LOGIN
               </Typography>
+                </>: <Typography
+                variant="body"
+                noWrap
+                component="div"
+                sx={{display:'flex',flexGrow: 1,alignItems:'center',marginRight:'20px'}}
+                onClick={()=>navigate('/login')}
+              >Profile
+              </Typography>
+              }
+             
 
           </Box>
 

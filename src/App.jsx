@@ -10,6 +10,7 @@ import AddABlog from './components/blogs/addABlog'
 import Home from './pages/home'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
+import EditABlog from './components/blogs/editABlog';
 
 function App() {
     const authChecked = useAuthCheck();
@@ -22,9 +23,10 @@ function App() {
         <Routes>
             <Route index path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />      
-              <Route path="/blogs/:id" element={<BlogDetails />} />
-              <Route path="/blog/addABlog" element={<AddABlog/>} />
-              <Route path="/blogs"  element={<Home />} />
+              <Route  path="/blogs/:id" element={<BlogDetails />} />
+              <Route  path="/blogs/edit/:id" element={<EditABlog />} />
+              <Route  path="/blogs/addABlog" element={<AddABlog/>} />
+              <Route   path="/blogs"  element={<Home />} />
               <Route path="/"  element={<Home />} />
         </Routes>
     </BrowserRouter>

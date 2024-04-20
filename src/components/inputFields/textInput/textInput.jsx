@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => ({
     padding: "0.35rem",
     fontSize: "0.875rem",
     backgroundColor:'white',
+  
     width:'100%',
     '& .MuiFormControl-root': {
       width:'100%!important'
@@ -23,12 +24,12 @@ const useStyles = makeStyles(() => ({
     textAlign: "start",
     display: "flex",
     alignItems: "center",
+    color:'white!important',
     padding: "0.5rem 0rem",
     marginTop:'0.6rem!important',
     marginRight: "1rem",
-    color: "rgb(76, 86, 100)",
     marginBottom: "0px",
-    fontSize: "0.875rem",
+    fontSize: "14px!important",
     fontWeight: "normal",
     fontStyle: "normal",
     whiteSpace: "nowrap",
@@ -58,7 +59,7 @@ const CustomInput = ({ labelName, name, isEditable, control, errors }) => {
         render={({ field }) => (
           <TextField
             id={name}
-            placeholder={labelName}
+            // placeholder={labelName}
             {...field}
             disabled={!isEditable}
             aria-disabled={!isEditable}

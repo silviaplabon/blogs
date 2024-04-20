@@ -1,4 +1,5 @@
 import {
+  useAddAReactionMutation,
   useGetAllBlogsQuery,
   useGetSpecificBlogQuery,
 } from "../../features/blogs/blogsApiSlice";
@@ -19,10 +20,16 @@ import AddAComment from "../comments/addAComment";
 import SearchAppBar from "../appbar/appbar";
 import CustomRating from "../ui/ratings/rating";
 import { useSelector } from "react-redux";
+import '../blogs/css/blogDetails.css'
+import { MdFavorite } from "react-icons/md";
 
 const BlogDetails = () => {
   const { id } = useParams();
+  
   const userId=useSelector(state=>state.auth.user._id)
+  const [rating, { data,isSuccess:isReactionSuccess, error: responseError }] = useAddAReactionMutation();
+    
+  
   const { data: blogs } = useGetAllBlogsQuery();
   const {
     data: blog,
@@ -31,6 +38,11 @@ const BlogDetails = () => {
     isSuccess,
   } = useGetSpecificBlogQuery(id);
   console.log(blog, isLoading, isError, isSuccess);
+  const handleAddToFavourites=()=>{
+    window.alert('clicked')
+    rating({blogId:id,userId:userId,reaction:true})
+  }
+
   return (
     <>
       <SearchAppBar></SearchAppBar>
@@ -76,12 +88,16 @@ const BlogDetails = () => {
             <Typography variant="body2" mt={1}>
               {blog?.shortDescription}
             </Typography>
-            <div
+            <div  
               dangerouslySetInnerHTML={{
                 __html: blog?.longDescription,
               }}
+              className="longDescription"
             ></div>
-               <CustomRating blogId={id} userId={userId}></CustomRating>
+            <Box display="flex" justifyContent="space-between">
+               <CustomRating  blogId={id} userId={userId}></CustomRating>
+               <MdFavorite size="40" onClick={()=>handleAddToFavourites()}></MdFavorite>
+            </Box>
             <Divider/>
          
 
@@ -90,7 +106,7 @@ const BlogDetails = () => {
               YOU MIGHT ALSO LIKE
             </Typography>
             <Divider></Divider>
-            <Grid container spacing={2} mt={1}>
+            <Grid container spacing={2} mt={1} sx={{marginBottom:'24px'}}>
               {blogs &&
                 blogs?.map((blog, index) => (
                   <Grid item xs={12} md={4} key={index} mt={1}>
@@ -105,8 +121,9 @@ const BlogDetails = () => {
             </Grid>
          
             <Typography>LEAVE A REPLY</Typography>
-            <Divider></Divider>
+            <Divider color="white"></Divider>
             <AddAComment></AddAComment>
+     
           </Grid>
           <Grid items xs={12} md={3}>
             <Box
@@ -116,7 +133,7 @@ const BlogDetails = () => {
               <Typography sx={{ width: "50%" }}>Latest Posts</Typography>{" "}
               <hr
                 style={{
-                  border: "1px solid black",
+                  border: "1px solid white",
                   width: "50%",
                   height: "0px",
                   textAlign: "center",

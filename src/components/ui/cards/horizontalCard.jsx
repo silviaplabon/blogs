@@ -7,6 +7,7 @@ import { Avatar, Box, Grid } from "@mui/material";
 import {makeStyles } from '@material-ui/core';
 import { MdPunchClock } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { FcRatings } from "react-icons/fc";
 
 const useStyles = makeStyles({
   multiLineEllipsis: {
@@ -44,11 +45,11 @@ const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
             background: "none",
             transformOrigin: "0 0",
             transform: "rotate(270deg)",
-            color: "black",
+            color: "white",
           }}
         >
           <Typography > July 31,2019 </Typography>
-          <Typography sx={{ border: "1px solid black",width:'100px',height:'0px',marginLeft:'10px' }}></Typography>
+          <Typography sx={{ border: "1px solid white",width:'100px',height:'0px',marginLeft:'10px' }}></Typography>
         </Box>
 
         <Grid items xs={12} md={4}>
@@ -87,9 +88,15 @@ const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
             <Typography variant="body2" mt={1} className={classes.multiLineEllipsis} sx={{ display:!isMinifiedVersion?' "-webkit-box"':'none',}}>
               {blog.shortDescription}
             </Typography>
+            <Box display="flex">
             <Typography variant="body1" mt={1}>
             <MdPunchClock></MdPunchClock>November 8,2021
           </Typography>
+          {/* <Typography variant="body1" mt={1} sx={{marginLeft:'10px'}}>
+             <FcRatings></FcRatings>12
+          </Typography> */}
+
+            </Box>
           </CardContent>
           <CardActions
             disableSpacing

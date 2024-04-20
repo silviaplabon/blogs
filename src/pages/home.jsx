@@ -1,15 +1,34 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Pagination, Typography } from "@mui/material";
 import {  useState } from "react";
 import CustomTab from "../components/ui/tabs/index.jsx";
-import CustomizedAccordions from "../components/ui/nestedList/nestedList.jsx";
-// import KeepMountedModal from "../components/ui/modal/modal.jsx";
-// import { useLoginMutation } from "../features/user/userApiSlice.jsx";
+import { makeStyles } from "@material-ui/core";
 import CategoriesPost from "../components/categoriesPost/categoriesPost.jsx";
 import HorizontalCard from "../components/ui/cards/horizontalCard.jsx";
 import {  useGetAllBlogsQuery } from "../features/blogs/blogsApiSlice.jsx";
 import SearchAppBar from "../components/appbar/appbar.jsx";
+const useStyles = makeStyles((theme) => ({
+  paginationRoot: {
+    '& .MuiPagination-ul': {
+      justifyContent: 'center',
+    },
+    '& .MuiPaginationItem-root': {
+      color: 'white',
+      // borderRadius: '50%', // Adjust this value for different roundness
+      // margin: theme.spacing(0.5),
+      // '&:hover': {
+      //   backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      // },
+    },
+    '& .Mui-selected': {
+      backgroundColor: 'white',
+      color: theme.palette.primary.main,
+    },
+  },
+}));
+
 
 const Home = () => {
+  const classes = useStyles();
   const [selectedTab, setSelectedTab] = useState(1);
  
   const {data:blogs,isLoading:isLoading}=useGetAllBlogsQuery()
@@ -29,7 +48,7 @@ const Home = () => {
     <Box p={2}>
       <Grid container spacing={6}>
         <Grid item xs={12} sm={12} md={4} lg={3}>
-          <CustomizedAccordions></CustomizedAccordions>
+    
           <Box  >
            <Typography  sx={{ padding:'10px',maxWidth:'360px',textAlign: "center",backgroundColor:'black',color:'white'}}>
            YOU MIGHT LIKE
@@ -68,7 +87,7 @@ const Home = () => {
               </Grid>
             ))}
           </Grid>
-        
+          <Pagination count={10} variant="outlined" shape="rounded" className={classes.paginationRoot} />
         </Grid>
        </Grid>
     </Box>

@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
-    // marginTop: theme.spacing(1),
+   
   },
   "& .MuiInputBase-input": {
     borderRadius: 4,
@@ -51,12 +51,12 @@ const useStyles = makeStyles(() => ({
     padding: "0.5rem 0rem",
     marginRight: "1rem",
     marginTop:'0.6rem!important',
-    color: "rgb(76, 86, 100)",
     marginBottom: "0",
-    fontSize: "0.875rem",
+    fontSize: "14px!important",
     fontWeight: "normal",
     fontStyle: "normal",
     whiteSpace: "nowrap",
+    color:'white!important'
   
   },
 }));

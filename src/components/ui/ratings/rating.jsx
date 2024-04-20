@@ -6,6 +6,7 @@ const CustomRating = ({blogId,userId}) => {
     const [review, { data,isSuccess, error: responseError }] = useAddAReviewMutation();
     
     const [value, setValue] = useState(2);
+    
     return (
    
       <Rating

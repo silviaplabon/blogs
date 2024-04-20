@@ -34,6 +34,7 @@ export const blogsApi = apiSlice.injectEndpoints({
                     console.log(err)
                 }
             },
+            invalidatedTags:['Blogs']
        }),
        addAReview: builder.mutation({
         query: (data) => ({
@@ -52,8 +53,25 @@ export const blogsApi = apiSlice.injectEndpoints({
             }
         },
        }),
-       invalidatedTags:['Blogs']
+       addAReaction: builder.mutation({
+        query: (data) => ({
+            url: `/blogs/${data.blogId}/reactions`,
+            method: "POST",
+            body: data,
+        }),
+
+        async onQueryStarted(arg, { queryFulfilled }) {
+            try {
+                const result = await queryFulfilled;
+                console.log(result,":result")
+            
+            } catch (err) {
+                console.log(err)
+            }
+        },
+       }),
+      
     }),
 });
 
-export const { useGetAllBlogsQuery,useGetSpecificBlogQuery,useAddBlogMutation,useAddAReviewMutation } = blogsApi;
+export const { useGetAllBlogsQuery,useGetSpecificBlogQuery,useAddBlogMutation,useAddAReviewMutation,useAddAReactionMutation} = blogsApi;
