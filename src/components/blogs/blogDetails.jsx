@@ -22,6 +22,7 @@ import CustomRating from "../ui/ratings/rating";
 import { useSelector } from "react-redux";
 import '../blogs/css/blogDetails.css'
 import { MdFavorite } from "react-icons/md";
+import { useEffect, useState } from "react";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -29,7 +30,6 @@ const BlogDetails = () => {
   const userId=useSelector(state=>state.auth.user._id)
   const [rating, { data,isSuccess:isReactionSuccess, error: responseError }] = useAddAReactionMutation();
     
-  
   const { data: blogs } = useGetAllBlogsQuery();
   const {
     data: blog,
@@ -37,11 +37,22 @@ const BlogDetails = () => {
     isError,
     isSuccess,
   } = useGetSpecificBlogQuery(id);
-  console.log(blog, isLoading, isError, isSuccess);
+ 
+  const [isFavourite,setIsFavourite]=useState(false)
   const handleAddToFavourites=()=>{
-    window.alert('clicked')
     rating({blogId:id,userId:userId,reaction:true})
   }
+
+  useEffect(()=>{
+     setIsFavourite(!isFavourite)
+  },[isReactionSuccess])
+
+  useEffect(()=>{
+    if(blog?.reactions){
+       const reactionData=blog.reactions.filter(reaction=>reaction.user==userId);
+       setIsFavourite(reactionData[0]?reactionData[0].reaction:false)   
+    }
+  },[blog])
 
   return (
     <>
@@ -96,7 +107,8 @@ const BlogDetails = () => {
             ></div>
             <Box display="flex" justifyContent="space-between">
                <CustomRating  blogId={id} userId={userId}></CustomRating>
-               <MdFavorite size="40" onClick={()=>handleAddToFavourites()}></MdFavorite>
+               <MdFavorite size="40" onClick={()=>handleAddToFavourites()} color={isFavourite?"red":'white'}></MdFavorite>
+
             </Box>
             <Divider/>
          

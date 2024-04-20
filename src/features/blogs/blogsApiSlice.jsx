@@ -4,9 +4,15 @@ import { apiSlice } from "../api/apiSlice";
 export const blogsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllBlogs:builder.query({
-            query:()=>"/blogs",keepUnusedDataFor:600,providedTags:['Blogs'],
+            query:(data)=>`/blogs/?userId=${data.userId}&category=${data.category}&page=${data.page}&limit=${data.limit}`,keepUnusedDataFor:600,providedTags:['Blogs'],
             transformResponse: (response) => {
                 console.log(response.data,"response")
+                return response.data
+            },
+        }),
+        getAllBlogsByTabs:builder.query({
+            query:(data)=>`/blogs/tabs/${data.tabName}?category=${data.category}&page=${data.page}&limit=${data.limit}`,keepUnusedDataFor:600,providedTags:['Blogs'],
+            transformResponse: (response) => {
                 return response.data
             },
         }),
@@ -74,4 +80,4 @@ export const blogsApi = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useGetAllBlogsQuery,useGetSpecificBlogQuery,useAddBlogMutation,useAddAReviewMutation,useAddAReactionMutation} = blogsApi;
+export const { useGetAllBlogsQuery,useGetAllBlogsByTabsQuery, useGetSpecificBlogQuery,useAddBlogMutation,useAddAReviewMutation,useAddAReactionMutation} = blogsApi;
