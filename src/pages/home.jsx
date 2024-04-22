@@ -63,7 +63,19 @@ const Home = () => {
            YOU MIGHT LIKE
             </Typography> 
           </Box>
+          {
+            isRandomBlogsLoading &&<>
+            <Skeleton animation="wave" mt="1" width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            </>
+          }
+          
           <Grid container spacing={2} mt={1}>
+            
             {randomBlogs && randomBlogs?.blogs?.map((blog, index) => (
               <Grid item xs={12} md={11} key={index} mt={1}>
                 <HorizontalCard

@@ -65,6 +65,7 @@ const CustomSelect = ({
   name,
   options,
   control,
+  isRequired,
   errors,
 }) => {
   const classes = useStyles();
@@ -74,7 +75,7 @@ const CustomSelect = ({
       <Controller
         name={name}
         control={control}
-        rules={{ required: true }}
+        rules={{ required: isRequired }}
         render={({ field }) => (
           <Select
             {...field}

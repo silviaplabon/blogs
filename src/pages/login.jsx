@@ -54,6 +54,7 @@ const Login = () => {
                   <CustomInput
                       labelName="Email"
                       name="email"
+                      isRequired={true}
                       isEditable={true} 
                       control={control} 
                       errors={errors}
@@ -65,6 +66,7 @@ const Login = () => {
               labelName="Password"
               name="password"
               isEditable={true} 
+              isRequired={true}
               control={control} 
               errors={errors}
             />

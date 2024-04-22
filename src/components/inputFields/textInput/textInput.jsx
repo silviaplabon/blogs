@@ -40,7 +40,7 @@ const useStyles = makeStyles(() => ({
   
 }));
 
-const CustomInput = ({ labelName, name, isEditable, control, errors }) => {
+const CustomInput = ({ labelName, name, isEditable, control, errors,isRequired }) => {
   const classes = useStyles();
 
   return (
@@ -55,7 +55,7 @@ const CustomInput = ({ labelName, name, isEditable, control, errors }) => {
       <Controller
         name={name}
         control={control}
-        rules={{ required: true }}
+        rules={{ required: isRequired }}
         render={({ field }) => (
           <TextField
             id={name}

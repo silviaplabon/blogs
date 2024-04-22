@@ -97,6 +97,7 @@ const AddABlog = () => {
               <CustomInput
                 labelName="Title"
                 name="title"
+                isRequired={true}
                 isEditable={true}
                 control={control}
                 errors={errors}
@@ -108,6 +109,7 @@ const AddABlog = () => {
                 options={categories}
                 isEditable={true}
                 control={control}
+                isRequired={true}
                 setSelectedCategory={setSelectedCategory}
                 selectedCategory={selectedCategory}
                 errors={errors}
@@ -116,6 +118,7 @@ const AddABlog = () => {
                 labelName="Featured Image"
                 name="featuredImage"
                 isEditable={true}
+                isRequired={true}
                 control={control}
                 errors={errors}
             />
@@ -125,6 +128,7 @@ const AddABlog = () => {
                 name="shortDescription"
                 isEditable={true}
                 control={control}
+                isRequired={true}
                 errors={errors}
               ></TextAreaInput>
         

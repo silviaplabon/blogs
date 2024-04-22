@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import '../blogs/css/blogDetails.css'
 import { MdFavorite } from "react-icons/md";
 import { useEffect, useState } from "react";
+import Comments from "../comments/comments";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -138,7 +139,12 @@ const BlogDetails = () => {
          
             <Typography>LEAVE A REPLY</Typography>
             <Divider color="white"></Divider>
-            <AddAComment></AddAComment>
+            <Comments blogId={id}></Comments>
+            <Box sx={{marginBottom:'100px'}}>
+            <Divider color='white' mb="2"></Divider>
+            <AddAComment blogId={id}></AddAComment>
+
+            </Box>
      
           </Grid>
           <Grid items xs={12} md={3}>

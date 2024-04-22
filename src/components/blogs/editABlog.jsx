@@ -105,6 +105,7 @@ const EditABlog = () => {
                 labelName="Title"
                 name="title"
                 isEditable={true}
+                isRequired={true}
                 control={control}
                 errors={errors}
               />
@@ -115,6 +116,7 @@ const EditABlog = () => {
                 options={categories}
                 isEditable={true}
                 control={control}
+                isRequired={true}
                 errors={errors}
               ></CustomSelect>
                <CustomSelect
@@ -123,12 +125,14 @@ const EditABlog = () => {
                 options={[{value:true,label:"True"},{value:false,label:"False"}]}
                 isEditable={true}
                 control={control}
+                isRequired={true}
                 errors={errors}
               ></CustomSelect>
               <CustomInput
                 labelName="Featured Image"
                 name="featuredImage"
                 isEditable={true}
+                isRequired={true}
                 control={control}
                 errors={errors}
             />
@@ -138,6 +142,7 @@ const EditABlog = () => {
                 name="shortDescription"
                 isEditable={true}
                 control={control}
+                isRequired={true}
                 errors={errors}
               ></TextAreaInput>
         

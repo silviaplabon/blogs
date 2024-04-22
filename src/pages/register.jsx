@@ -46,6 +46,7 @@ const Register = () => {
                       labelName="Name"
                       name="name"
                       isEditable={true} 
+                      isRequired={true}
                       control={control} 
                       errors={errors}
                   />
@@ -55,6 +56,7 @@ const Register = () => {
                       labelName="Email"
                       name="email"
                       isEditable={true} 
+                      isRequired={true}
                       control={control} 
                       errors={errors}
                   />
@@ -66,11 +68,12 @@ const Register = () => {
               labelName="Password"
               name="password"
               isEditable={true} 
+              isRequired={true}
               control={control} 
               errors={errors}
             />
                      
-             <CustomCheckbox  control={control} labelName="I've read and agree with terms of service and privacy policy"  name="isAgreedWithTerms"></CustomCheckbox>
+             <CustomCheckbox  control={control}  isRequired={false} labelName="I've read and agree with terms of service and privacy policy"  name="isAgreedWithTerms"></CustomCheckbox>
              <Button
               variant="contained"
               mb={1}

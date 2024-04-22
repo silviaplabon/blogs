@@ -2,12 +2,16 @@
 import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
 import { FormHelperText, InputLabel } from '@mui/material';
 import { styled } from '@mui/system';
+import { useEffect, useRef } from 'react';
 import { Controller } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 const TextAreaInput = (({ labelName,
     name,
     control,
     placeholder,
+    isRequired,
     errors}) => {
+      const commentId=useSelector(state=>state.comment.executingCommentId);
     const blue = {
         100: '#DAECFF',
         200: '#b6daff',
@@ -58,15 +62,21 @@ const TextAreaInput = (({ labelName,
         }
       `,
       );
+      const textareaRef = useRef(null);
+      useEffect(() => {
+        if (textareaRef.current && name=="comment") {
+            textareaRef.current.focus();
+        }
+    }, [commentId]);
     return (
       <>
         <InputLabel sx={{ marginTop:'1rem!important',fontSize:'14px!important',color:'white!important',marginBottom:'0.3rem'}} >{labelName}</InputLabel>
         <Controller
           name={name}
           control={control}
-          rules={{ required: true }}
+          rules={{ required: isRequired }}
           render={({ field }) => (
-            <Textarea {...field} aria-label="minimum height" minRows={3} placeholder={placeholder} />
+            <Textarea {...field} aria-label="minimum height"   ref={textareaRef}  minRows={3} placeholder={placeholder} />
           )}
           />
           {errors[name] && (

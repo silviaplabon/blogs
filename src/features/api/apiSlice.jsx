@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { userLoggedOut } from "../user/authSlice";
 const baseQuery = fetchBaseQuery({
-    baseUrl:"blogs-nodejs-mongoose-express-lwck.vercel.app",
+    baseUrl:"https://bc01-103-47-103-10.ngrok-free.app",
     prepareHeaders: async (headers, { getState }) => {
         const token = getState()?.auth?.accessToken;
         if (token) {
