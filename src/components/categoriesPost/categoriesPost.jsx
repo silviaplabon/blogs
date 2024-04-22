@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Grid, Pagination, Typography } from "@mui/material";
+import { Box, Grid, Pagination, Skeleton, Typography } from "@mui/material";
 import VerticalCard from "../ui/cards/verticalCard";
 import { makeStyles } from "@material-ui/core";
 import { useGetAllBlogsQuery } from "../../features/blogs/blogsApiSlice";
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const CategoriesPost = () => {
   const classes=useStyles();
     
-  const userId=useSelector(state=>state.auth.user._id);
+  const userId=useSelector(state=>state.auth.user?._id);
   const category=useSelector(state=>state.blog.selectedCategory);
   const [page,setPage]=useState(1);
   const limit=5;
@@ -48,7 +48,15 @@ const CategoriesPost = () => {
 
   return (
     <Box p={2}>
-      <Typography>{category?.value}</Typography>
+         {
+            isLoading &&<>
+            <Skeleton animation="wave" mt="1" width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            </>
+          }
+     
           <Grid container spacing={2} mt={1}>
           <Grid item xs={12} md={5}>
             <Box  sx={{height:'100%'}} mt={1}>

@@ -1,10 +1,10 @@
-import { Box, Grid, Pagination, Typography } from "@mui/material";
+import { Box, Grid, Pagination, Skeleton, Typography } from "@mui/material";
 import {  useEffect, useState } from "react";
 import CustomTab from "../components/ui/tabs/index.jsx";
 import { makeStyles } from "@material-ui/core";
 import CategoriesPost from "../components/categoriesPost/categoriesPost.jsx";
 import HorizontalCard from "../components/ui/cards/horizontalCard.jsx";
-import {  useGetAllBlogsByTabsQuery} from "../features/blogs/blogsApiSlice.jsx";
+import {  useGetAllBlogsByTabsQuery, useGetRandomBlogsQuery} from "../features/blogs/blogsApiSlice.jsx";
 import SearchAppBar from "../components/appbar/appbar.jsx";
 import { useSelector } from "react-redux";
 
@@ -33,9 +33,12 @@ const Home = () => {
   const [page,setPage]=useState(1);
   const limit=5;
   
+  
   const category=useSelector(state=>state.blog.selectedCategory);
 
   const {data:blogsData,isLoading:isLoading,refetch}=useGetAllBlogsByTabsQuery({tabName:selectedTab ? tabs[selectedTab]: tabs[0],category:category?.value,page:page,limit:limit});
+  const {data:randomBlogs,isLoading:isRandomBlogsLoading,refetch:refetchRandomBlogs}=useGetRandomBlogsQuery({category:category?.value});
+
 
   useEffect(()=>{
     refetch({ category: category?.value, page: page, limit: limit });
@@ -61,7 +64,7 @@ const Home = () => {
             </Typography> 
           </Box>
           <Grid container spacing={2} mt={1}>
-            {blogsData && blogsData?.blogs?.map((blog, index) => (
+            {randomBlogs && randomBlogs?.blogs?.map((blog, index) => (
               <Grid item xs={12} md={11} key={index} mt={1}>
                 <HorizontalCard
                   key={index}
@@ -76,12 +79,29 @@ const Home = () => {
       
         </Grid>
         <Grid item xs={12} sm={12} md={8} lg={9}>
+          {
+            category?.value && <>
+            <Typography variant="h6">Category</Typography>
+            <Typography>{category?.value}</Typography>
+            </>
+
+          }
           <CategoriesPost></CategoriesPost>
           <CustomTab
             tabs={tabs}
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}
           ></CustomTab>
+          {
+            isLoading &&<>
+            <Skeleton animation="wave" mt="1" width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            <Skeleton animation="wave"  width="100%" height={60} />
+            </>
+          }
           <Grid container spacing={2} mt={1}>
             {blogsData && blogsData?.blogs?.map((blog, index) => (
               <Grid item xs={12} md={11} key={index} mt={1}>

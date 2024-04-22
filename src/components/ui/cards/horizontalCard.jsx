@@ -8,6 +8,7 @@ import {makeStyles } from '@material-ui/core';
 import { MdPunchClock } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { FcRatings } from "react-icons/fc";
+import { useEffect, useState } from "react";
 
 const useStyles = makeStyles({
   multiLineEllipsis: {
@@ -26,10 +27,15 @@ const useStyles = makeStyles({
 
 // eslint-disable-next-line react/prop-types
 const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
-  // const data = useSelector((state) => state.carts);
   const navigate = useNavigate();
+  const [reactionCount,setReactionCount]=useState(0)
   const classes = useStyles();
-  // console.log(data);
+  useEffect(()=>{
+      const filteredReactions=blog.reactions?.filter(blog=>blog.reaction);
+      setReactionCount(filteredReactions.length)
+  },[blog])
+
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
     <Box sx={{ position: "relative" }} className="mt-1"  onClick={()=> navigate(`/blogs/${blog?._id}`)}>
@@ -48,7 +54,7 @@ const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
             color: "white",
           }}
         >
-          <Typography > July 31,2019 </Typography>
+          <MdPunchClock></MdPunchClock>{blog?.createdTime ?new Date(blog?.createdTime ).toLocaleDateString(undefined,options):''}
           <Typography sx={{ border: "1px solid white",width:'100px',height:'0px',marginLeft:'10px' }}></Typography>
         </Box>
 
@@ -90,7 +96,6 @@ const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
             </Typography>
             <Box display="flex">
             <Typography variant="body1" mt={1}>
-            <MdPunchClock></MdPunchClock>November 8,2021
           </Typography>
           {/* <Typography variant="body1" mt={1} sx={{marginLeft:'10px'}}>
              <FcRatings></FcRatings>12

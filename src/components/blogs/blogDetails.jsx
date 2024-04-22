@@ -1,6 +1,8 @@
 import {
   useAddAReactionMutation,
+  useGetAllBlogsByTabsQuery,
   useGetAllBlogsQuery,
+  useGetRandomBlogsQuery,
   useGetSpecificBlogQuery,
 } from "../../features/blogs/blogsApiSlice";
 import {
@@ -26,17 +28,22 @@ import { useEffect, useState } from "react";
 
 const BlogDetails = () => {
   const { id } = useParams();
+  const category=useSelector(state=>state.blog.selectedCategory);
   
   const userId=useSelector(state=>state.auth.user._id)
   const [rating, { data,isSuccess:isReactionSuccess, error: responseError }] = useAddAReactionMutation();
     
-  const { data: blogs } = useGetAllBlogsQuery();
+  const {data:randomBlogs,isLoading:isRandomBlogsLoading,refetch:refetchRandomBlogs}=useGetRandomBlogsQuery({category:category?.value});
+
+  const {data:blogsData,isLoading:isLoadingLatest,refetch}=useGetAllBlogsByTabsQuery({tabName:"LATEST",category:category?.value,page:1,limit:10});
+
   const {
     data: blog,
     isLoading: isLoading,
     isError,
     isSuccess,
   } = useGetSpecificBlogQuery(id);
+  
  
   const [isFavourite,setIsFavourite]=useState(false)
   const handleAddToFavourites=()=>{
@@ -100,7 +107,7 @@ const BlogDetails = () => {
               {blog?.shortDescription}
             </Typography>
             <div  
-              dangerouslySetInnerHTML={{
+              dangerouslyzSetInnerHTML={{
                 __html: blog?.longDescription,
               }}
               className="longDescription"
@@ -111,16 +118,13 @@ const BlogDetails = () => {
 
             </Box>
             <Divider/>
-         
-
-
             <Typography variant="h4" sx={{ textAlign: "center" }}>
               YOU MIGHT ALSO LIKE
             </Typography>
             <Divider></Divider>
             <Grid container spacing={2} mt={1} sx={{marginBottom:'24px'}}>
-              {blogs &&
-                blogs?.map((blog, index) => (
+              {randomBlogs &&
+                randomBlogs?.blogs?.map((blog, index) => (
                   <Grid item xs={12} md={4} key={index} mt={1}>
                     <VerticalCard
                       key={index}
@@ -152,8 +156,8 @@ const BlogDetails = () => {
                 }}
               ></hr>
             </Box>
-            {blogs &&
-              blogs?.map((blog, index) => (
+            {blogsData &&
+              blogsData?.blogs?.map((blog, index) => (
                 <Grid item xs={12} md={12} key={index} mt={1}>
                   <HorizontalCard
                     key={index}

@@ -4,18 +4,45 @@ import { apiSlice } from "../api/apiSlice";
 export const blogsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllBlogs:builder.query({
-            query:(data)=>`/blogs/?userId=${data.userId}&category=${data.category}&page=${data.page}&limit=${data.limit}`,keepUnusedDataFor:600,providedTags:['Blogs'],
+            query:(data)=>{
+                if(data.category){
+                    return `/blogs/?userId=${data.userId}&category=${data.category}&page=${data.page}&limit=${data.limit}`
+                }else{
+                    return `/blogs/?userId=${data.userId}&page=${data.page}&limit=${data.limit}`
+                }
+            },
+            keepUnusedDataFor:600,providedTags:['BlogsByUser'],
             transformResponse: (response) => {
-                console.log(response.data,"response")
                 return response.data
             },
         }),
         getAllBlogsByTabs:builder.query({
-            query:(data)=>`/blogs/tabs/${data.tabName}?category=${data.category}&page=${data.page}&limit=${data.limit}`,keepUnusedDataFor:600,providedTags:['Blogs'],
+            query:(data)=>{
+                if (data.category) {
+                    return `/blogs/tabs/${data.tabName}?category=${data.category}&page=${data.page}&limit=${data.limit}`;
+                } else {
+                    return `/blogs/tabs/${data.tabName}?page=${data.page}&limit=${data.limit}`;
+                }
+            },
+            keepUnusedDataFor:600,providedTags:['BlogsByTabs'],
             transformResponse: (response) => {
                 return response.data
             },
         }),
+        getRandomBlogs:builder.query({
+            query:(data)=> {
+                if (data.category) {
+                    return `/blogs/randomBlogs?category=${encodeURIComponent(data.category)}`;
+                } else {
+                    return '/blogs/randomBlogs';
+                }
+            },
+            keepUnusedDataFor:600,providedTags:['BlogsByRando'],
+            transformResponse: (response) => {
+                return response.data
+            },
+        }),
+        
         getSpecificBlog:builder.query({ 
             query:(blogId)=>`/blogs/${blogId}`,providedTags:(result,error,arg)=>[{'type':'Blog',id:arg}],
             transformResponse: (response) => {
@@ -40,8 +67,26 @@ export const blogsApi = apiSlice.injectEndpoints({
                     console.log(err)
                 }
             },
-            invalidatedTags:['Blogs']
+            invalidatedTags:['BlogsByUser']
        }),
+       updateABlog: builder.mutation({
+        query: (data) => ({
+            url: "/blogs/:id",
+            method: "PATCH",
+            body: data,
+        }),
+
+        async onQueryStarted(arg, { queryFulfilled }) {
+            try {
+                const result = await queryFulfilled;
+                console.log(result,":result")
+            
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        invalidatedTags:['BlogsByUser']
+   }),
        addAReview: builder.mutation({
         query: (data) => ({
             url: `/blogs/${data.blogId}/reviews`,
@@ -80,4 +125,4 @@ export const blogsApi = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useGetAllBlogsQuery,useGetAllBlogsByTabsQuery, useGetSpecificBlogQuery,useAddBlogMutation,useAddAReviewMutation,useAddAReactionMutation} = blogsApi;
+export const { useGetAllBlogsQuery,useGetAllBlogsByTabsQuery,useGetRandomBlogsQuery, useGetSpecificBlogQuery,useAddBlogMutation,useAddAReviewMutation,useAddAReactionMutation,useUpdateABlogMutation} = blogsApi;

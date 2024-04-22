@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { categories } from "../../utils/categories";
 import { useDispatch, useSelector } from "react-redux";
 import { AddUserSelectedCategory } from "../../features/blogs/blogsSlice";
+import { userLoggedOut } from "../../features/user/authSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -78,6 +79,9 @@ export default function SearchAppBar() {
     dispatch(AddUserSelectedCategory({selectedCategory:selectedCategory}));
     setAnchorEl(null);
   };
+  const handleLogout=()=>{
+    dispatch(userLoggedOut())
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: "#005652" }}>
@@ -189,10 +193,11 @@ export default function SearchAppBar() {
                   alignItems: "center",
                   marginRight: "20px",
                 }}
-                onClick={() => navigate("/login")}
+                onClick={() =>handleLogout()}
               >
-                Profile
+               Logout
               </Typography>
+              
             )}
           </Box>
 

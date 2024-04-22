@@ -12,7 +12,7 @@ import CustomSelect from "../inputFields/select/select";
 import TextAreaInput from "../inputFields/textInput/textAreaInput";
 import draftToHtml from "draftjs-to-html";
 import { convertToRaw } from "draft-js";
-import { useAddBlogMutation, useGetSpecificBlogQuery } from "../../features/blogs/blogsApiSlice";
+import { useAddBlogMutation, useGetSpecificBlogQuery, useUpdateABlogMutation } from "../../features/blogs/blogsApiSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { categories } from "../../utils/categories";
 import { InputLabel } from "@material-ui/core";
@@ -34,17 +34,9 @@ const EditABlog = () => {
   const navigate = useNavigate();
   const userDetails = useSelector((state) => state.auth.user);
   const classes = useStyles();
-  const [addBlog, { isLoading, isError, isSuccess }] = useAddBlogMutation();
-  const initialContent = `
-  `;
-  const ContentBlock = htmlToDraft(initialContent);
-  const contentState = ContentState.createFromBlockArray(
-    ContentBlock.contentBlocks
-  );
-  const editorState = EditorState.createWithContent(contentState);
-  const [RichContent, setRichContent] = useState(editorState);
+  const [updateBlog, { isLoading, isError, isSuccess }] = useUpdateABlogMutation();
 
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [RichContent, setRichContent] = useState('');
 
   const {
     formState: { errors },
@@ -60,18 +52,22 @@ const EditABlog = () => {
       userId: userDetails?._id,
       email: userDetails?.email,
       userName: userDetails?.name,
-      profileImage:userDetails?.profileImage
+      profileImage:userDetails?.profileImage,
+      isEnabledPaidService:blog?.isEnabledPaidService ? blog.isEnabledPaidService:false
     },
   });
   useEffect(()=>{
-    const initialContent = blog?.longDescription
-  const ContentBlock = htmlToDraft(initialContent);
-  const contentState = ContentState.createFromBlockArray(
-    ContentBlock.contentBlocks
-  );
+    const initialContent = blog?.longDescription?blog?.longDescription:''
+    if(initialContent!=""){
+      const ContentBlock = htmlToDraft(initialContent);
+      const contentState = ContentState.createFromBlockArray(
+        ContentBlock.contentBlocks
+      );
+    
+       const  editorState = EditorState.createWithContent(contentState);
+       setRichContent(editorState)
 
-   const  editorState = EditorState.createWithContent(contentState);
-   setRichContent(editorState)
+    }
   },[blog])
 
 
@@ -89,7 +85,7 @@ const EditABlog = () => {
     }
     data.longDescription = finalContent;
     console.log(data);
-    addBlog(data);
+    updateBlog(data);
   };
   if (isSuccess) {
     navigate("/");
@@ -119,8 +115,14 @@ const EditABlog = () => {
                 options={categories}
                 isEditable={true}
                 control={control}
-                setSelectedCategory={setSelectedCategory}
-                selectedCategory={selectedCategory}
+                errors={errors}
+              ></CustomSelect>
+               <CustomSelect
+                labelName="Paid Service"
+                name="isEnabledPaidService"
+                options={[{value:true,label:"True"},{value:false,label:"False"}]}
+                isEditable={true}
+                control={control}
                 errors={errors}
               ></CustomSelect>
               <CustomInput
