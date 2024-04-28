@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 
 import { categories } from "../../utils/categories";
 import { useDispatch, useSelector } from "react-redux";
-import { AddUserSelectedCategory } from "../../features/blogs/blogsSlice";
+import { AddSearchText, AddUserSelectedCategory } from "../../features/blogs/blogsSlice";
 import { userLoggedOut } from "../../features/user/authSlice";
 
 const Search = styled("div")(({ theme }) => ({
@@ -64,16 +64,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar({showSearchBar,showCategories}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const searchTitle=useSelector(state=>state.blog.title);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  const [searchText, setSearchText] = useState('');
   const handleClose = (item) => {
     const selectedCategory = { value: item.value, label: item.label };
     dispatch(AddUserSelectedCategory({selectedCategory:selectedCategory}));
@@ -82,6 +85,17 @@ export default function SearchAppBar() {
   const handleLogout=()=>{
     dispatch(userLoggedOut())
   }
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const searchText = event.target.value;
+      dispatch(AddSearchText({title:searchText}))
+    }
+  };
+  
+  useEffect(()=>{
+     setSearchText(searchTitle)
+  },[searchTitle])
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: "#005652" }}>
@@ -106,6 +120,8 @@ export default function SearchAppBar() {
           </Typography>
 
           <Box display="flex" justifyContent="space-between">
+            {
+              showCategories && <>
             <Button
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
@@ -140,6 +156,8 @@ export default function SearchAppBar() {
                 );
               })}
             </Menu>
+              </>
+            }
             <Typography
               variant="body"
               noWrap
@@ -201,6 +219,8 @@ export default function SearchAppBar() {
             )}
           </Box>
 
+{
+  showSearchBar ?
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -208,8 +228,26 @@ export default function SearchAppBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchText}
+              onChange={(event) => setSearchText(event.target.value)}
+              onKeyPress={handleKeyPress}
             />
-          </Search>
+          </Search>:
+           <Typography
+           variant="body"
+           noWrap
+           component="div"
+           sx={{
+             display: "flex",
+             flexGrow: 1,
+             alignItems: "center",
+             marginRight: "20px",
+           }}
+            onClick={() => navigate("/search")}
+         >
+         Search
+         </Typography>
+}
         </Toolbar>
       </AppBar>
     </Box>

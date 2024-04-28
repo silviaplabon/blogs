@@ -7,6 +7,7 @@ import HorizontalCard from "../components/ui/cards/horizontalCard.jsx";
 import {  useGetAllBlogsByTabsQuery, useGetRandomBlogsQuery} from "../features/blogs/blogsApiSlice.jsx";
 import SearchAppBar from "../components/appbar/appbar.jsx";
 import { useSelector } from "react-redux";
+import CustomNoRowsOverlay from "../components/noContentFound/noContentFound.jsx";
 
 const useStyles = makeStyles((theme) => ({
   paginationRoot: {
@@ -32,6 +33,8 @@ const Home = () => {
   const tabs = ["LATEST", "BEST RATED", "SPECIALS"];
   const [page,setPage]=useState(1);
   const limit=5;
+  const searchText=useSelector(state=>state.blog.title);
+
   
   
   const category=useSelector(state=>state.blog.selectedCategory);
@@ -52,11 +55,10 @@ const Home = () => {
 
   return (
     <>
- 
-    <SearchAppBar></SearchAppBar>
+    <SearchAppBar showSearchBar={false} showCategories={true}></SearchAppBar>
      <Box p={2}>
        <Grid container spacing={6}>
-         <Grid item xs={12} sm={12} md={4} lg={3}>
+         {/* <Grid item xs={0} sm={0} md={0} lg={3} xl={2}>
     
           <Box  >
            <Typography  sx={{ padding:'10px',maxWidth:'360px',textAlign: "center",backgroundColor:'black',color:'white'}}>
@@ -74,9 +76,9 @@ const Home = () => {
             </>
           }
           
-          <Grid container spacing={2} mt={1}>
+          <Grid container spacing={1} mt={1}>
             
-            {randomBlogs && randomBlogs?.blogs?.map((blog, index) => (
+            { randomBlogs && randomBlogs?.blogs?.map((blog, index) => (
               <Grid item xs={12} md={11} key={index} mt={1}>
                 <HorizontalCard
                   key={index}
@@ -87,13 +89,15 @@ const Home = () => {
               </Grid>
             ))}
           </Grid>
-        
+          {    !isLoading && randomBlogs &&randomBlogs?.blogs?.length<1   &&
+<CustomNoRowsOverlay/>
+}
       
-        </Grid>
-        <Grid item xs={12} sm={12} md={8} lg={9}>
+        </Grid> */}
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           {
             category?.value && <>
-            <Typography variant="h6">Category</Typography>
+            <Typography variant="h6">Selected Category</Typography>
             <Typography>{category?.value}</Typography>
             </>
 
@@ -114,9 +118,9 @@ const Home = () => {
             <Skeleton animation="wave"  width="100%" height={60} />
             </>
           }
-          <Grid container spacing={2} mt={1}>
+          <Grid container spacing={4} mt={1}>
             {blogsData && blogsData?.blogs?.map((blog, index) => (
-              <Grid item xs={12} md={11} key={index} mt={1}>
+              <Grid item xs={12} md={11} key={index} mt={1} sx={{paddingLeft:'50px!important'}}>
                 <HorizontalCard
                   key={index}
                   blog={blog}
@@ -125,7 +129,10 @@ const Home = () => {
               </Grid>
             ))}
           </Grid>
-          <Pagination count={blogsData?.count?blogsData.count:1} variant="outlined" shape="rounded" className={classes.paginationRoot} page={page} 
+{    !isLoading && blogsData &&blogsData?.blogs?.length<1   &&
+<CustomNoRowsOverlay/>
+}
+             <Pagination count={blogsData?.count?blogsData.count:1} variant="outlined" shape="rounded" className={classes.paginationRoot} page={page} 
       onChange={handlePageChange}  />
         </Grid>
        </Grid>

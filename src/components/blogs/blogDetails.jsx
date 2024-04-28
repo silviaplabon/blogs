@@ -61,10 +61,11 @@ const BlogDetails = () => {
        setIsFavourite(reactionData[0]?reactionData[0].reaction:false)   
     }
   },[blog])
+  
 
   return (
     <>
-      <SearchAppBar></SearchAppBar>
+      <SearchAppBar showSearchBar={false}  showCategories={false}></SearchAppBar>
       <Container>
         <Grid container spacing={4} mt={1}>
           <Grid item xs={12} md={9} sx={{ paddingRight: "10px" }}>
@@ -72,7 +73,7 @@ const BlogDetails = () => {
             <Box sx={{ display: "flex" }} mb={1}>
               <Avatar
                 alt="Remy Sharp"
-                src="https://a.storyblok.com/f/191576/1200x800/215e59568f/round_profil_picture_after_.webp"
+                src={blog?.profileImage}
               />
               <Typography
                 variant="h6"
@@ -86,7 +87,7 @@ const BlogDetails = () => {
                   marginLeft: "10px",
                 }}
               >
-                By Celine Dee .EUROPE
+                By {blog?.userName}
               </Typography>
             </Box>
             <Typography variant="h5" my={1}>
@@ -108,7 +109,7 @@ const BlogDetails = () => {
               {blog?.shortDescription}
             </Typography>
             <div  
-              dangerouslyzSetInnerHTML={{
+              dangerouslySetInnerHTML={{
                 __html: blog?.longDescription,
               }}
               className="longDescription"
@@ -147,7 +148,7 @@ const BlogDetails = () => {
             </Box>
      
           </Grid>
-          <Grid items xs={12} md={3}>
+          <Grid item xs={12} md={3}>
             <Box
               mt={15}
               sx={{ display: "flex", justifyContent: "space-between" }}
@@ -162,6 +163,7 @@ const BlogDetails = () => {
                 }}
               ></hr>
             </Box>
+            <Grid container spacing={1} mt={1}>
             {blogsData &&
               blogsData?.blogs?.map((blog, index) => (
                 <Grid item xs={12} md={12} key={index} mt={1}>
@@ -174,6 +176,7 @@ const BlogDetails = () => {
                 </Grid>
               ))}
           </Grid>
+        </Grid>
         </Grid>
       </Container>
     </>

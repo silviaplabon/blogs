@@ -12,24 +12,29 @@ import { CiEdit } from "react-icons/ci";
 import { Edit } from "@mui/icons-material";
 import { MdFavorite } from "react-icons/md";
 import { useEffect, useState } from "react";
+import { CiRead } from "react-icons/ci";
+import { FaTrash } from "react-icons/fa";
+import { useDeleteABlogMutation } from "../../../features/blogs/blogsApiSlice";
+import { useSelector } from "react-redux";
 
 // eslint-disable-next-line react/prop-types
 const VerticalCard = ({ blog,height}) => {
-  // const data = useSelector((state) => state.carts);
-  console.log(blog,"DATA");
   const navigate = useNavigate();
-  console.log(height)
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const [reactionCount,setReactionCount]=useState(0);
-  
+  const userData=useSelector(state=>state.auth.user);
+  const [deleteBlog, { isLoading, isError, isSuccess }] = useDeleteABlogMutation();
 
   useEffect(()=>{
       const filteredReactions=blog.reactions?.filter(blog=>blog.reaction);
       setReactionCount(filteredReactions.length)
   },[blog])
 
+  const handleDeleteBlog=()=>{
+    deleteBlog({_id:blog?._id})
+  }
   return (
-    <Box sx={{ position: "relative"}} className="mt-1" >
+    <Box sx={{ position: "relative",width:'100%'}} className="mt-1" >
       <Grid container>
         <CardMedia
           component="img"
@@ -39,9 +44,9 @@ const VerticalCard = ({ blog,height}) => {
         />
         
 
-        <CardContent sx={{paddingX:0}}>
+        <CardContent sx={{paddingX:0,width:'100%'}}>
           <Button
-            variant="contained"
+            variant="outlined"
             mb={1}
             sx={{ borderRadius: "20px!important" }}
           >
@@ -54,20 +59,30 @@ const VerticalCard = ({ blog,height}) => {
           
           <Box display="flex" justifyContent="space-between" mt="1">
             <Typography variant="body1">
-            <MdPunchClock  ></MdPunchClock>{blog?.createdTime ?new Date(blog?.createdTime ).toLocaleDateString(undefined,options):''}
-          </Typography>
-        {
-          blog?.readCount && 
-        <Typography  display="flex" alignItems="center">
-          
-             <FcRatings size="25" color="gray"></FcRatings>{blog?.readCount}
-        </Typography>
-        }
-             <CiEdit  size="25" onClick={()=> navigate(`/blogs/edit/${blog?._id}`)}/>
-           {
-            reactionCount>0 && <Typography display="flex" alignItems="center">
-             <MdFavorite color="red" size="25"></MdFavorite>{reactionCount}</Typography>
-           }
+               <MdPunchClock  ></MdPunchClock>{blog?.createdTime ?new Date(blog?.createdTime ).toLocaleDateString(undefined,options):''}
+            </Typography>
+            <Typography  display="flex" alignItems="center">
+              { blog?.readCount &&<>
+                 <CiRead size="25" color="gray"></CiRead>{blog?.readCount} 
+               </> 
+              }
+            </Typography>
+           
+{
+  userData?._id==blog?.userId &&<>
+   <Typography  display="flex" alignItems="center">
+              <CiEdit  size="25" onClick={()=> navigate(`/blogs/edit/${blog?._id}`)}/>
+            </Typography>
+            <FaTrash onClick={()=>handleDeleteBlog()}></FaTrash>
+  </>  
+}
+            
+           
+                <Typography display="flex" alignItems="center">{
+            reactionCount>0 &&<>
+               <MdFavorite color="red" size="25"></MdFavorite>{reactionCount}</>
+             }
+             </Typography>
         
             </Box>
         </CardContent>

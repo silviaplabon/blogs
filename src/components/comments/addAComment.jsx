@@ -84,7 +84,7 @@ const AddAComment = ({blogId}) => {
               variant="contained"
               mb={1}
               type="submit"
-              isDisabled={isLoading}
+            disabled={isLoading}
               sx={{ borderRadius: "20px!important",marginTop:'20px',backgroundColor:'#82b440' }}
             >
               SUBMIT

@@ -58,8 +58,9 @@ const AddABlog = () => {
       longDescription: "",
       featuredImage: "",
       userId: userDetails?._id,
+      userName:userDetails?.name,
       email: userDetails?.email,
-      userName: userDetails?.name,
+      
       profileImage:userDetails?.profileImage
     },
   });
@@ -77,7 +78,8 @@ const AddABlog = () => {
       finalContent = "";
     }
     data.longDescription = finalContent;
-    console.log(data);
+    data.userName=userDetails?.name;
+    data.profileImage=userDetails?.profileImage;
     addBlog(data);
   };
   if (isSuccess) {
@@ -89,8 +91,8 @@ const AddABlog = () => {
   } else {
     return (
       <>
-        <SearchAppBar></SearchAppBar>
-        <Container>
+        <SearchAppBar showSearchBar={false}  showCategories={false}></SearchAppBar>
+        <Container >
           <Typography variant="h4" sx={{marginTop:'20px'}}>ADD A BLOG</Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
@@ -145,6 +147,7 @@ const AddABlog = () => {
               editorClassName="editor-class"
               toolbarClassName="toolbar-class"
               editorState={RichContent}
+          
               onEditorStateChange={(data) => setRichContent(data)}
               />
             </FormGroup>

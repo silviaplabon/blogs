@@ -177,7 +177,7 @@ const Comment = ({ data }) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-            <HiOutlineDotsVertical sx={{ marginLeft: 'auto' }}  options ></HiOutlineDotsVertical>
+            <HiOutlineDotsVertical sx={{ marginLeft: 'auto' }}  ></HiOutlineDotsVertical>
       </Button>
       <Menu
         id="basic-menu"

@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../features/user/userApiSlice';
 import Swal from 'sweetalert2'
 import { useEffect } from 'react';
+import SearchAppBar from '../components/appbar/appbar';
 
 const Login = () => {
      const [Login, { data,isSuccess, error: responseError }] = useLoginMutation();
      const navigate=useNavigate()
-     console.log(responseError,":EEEEEEEEEEEEEEEEEEEEEEEE")
+   
     const {
         formState: { errors },
         handleSubmit,
@@ -20,7 +21,7 @@ const Login = () => {
             password:'',
       },})
     
-    console.log(data,isSuccess,responseError,"data,isSuccess,responseError")
+
 
   const onSubmit= (data) => {
     Login(data);
@@ -42,6 +43,8 @@ const Login = () => {
      navigate("/")
   }else{
       return (
+        <>
+        <SearchAppBar></SearchAppBar>
          <Box sx={{ width: '100%',  backgroundImage: 'linear-gradient(to right, #ffe4e4, #ffb8b8)', display: 'flex', justifyContent: 'center',alignItems:'center',height:'100vh'}}>
              <Card  sx={{ backgroundImage: "url('https://images.unsplash.com/photo-1707246989621-d269d8de2300?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
       backgroundSize: "cover",
@@ -87,6 +90,10 @@ const Login = () => {
   
              </Card>
          </Box>
+      
+        
+        </>
+
   
       );
   }

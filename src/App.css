@@ -3,5 +3,6 @@
   margin:0;
   background-color: #1e1e1e;
   color:white;
-  height:100%;
+  min-height: 100vh;
+  max-height: 100%;
 }

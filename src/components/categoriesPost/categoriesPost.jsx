@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core";
 import { useGetAllBlogsQuery } from "../../features/blogs/blogsApiSlice";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import CustomNoRowsOverlay from "../noContentFound/noContentFound";
 const useStyles = makeStyles((theme) => ({
   paginationRoot: {
     '& .MuiPagination-ul': {
@@ -47,7 +48,7 @@ const CategoriesPost = () => {
 
 
   return (
-    <Box p={2}>
+    <Box sx={{paddingLeft:'0px!important'}}>
          {
             isLoading &&<>
             <Skeleton animation="wave" mt="1" width="100%" height={60} />
@@ -58,21 +59,22 @@ const CategoriesPost = () => {
           }
      
           <Grid container spacing={2} mt={1}>
-          <Grid item xs={12} md={5}>
-            <Box  sx={{height:'100%'}} mt={1}>
+          <Grid item xs={12} md={4}>
+            <Box sx={{height:'100%',paddingLeft:'10px'}} mt={1}>
               {
                 blogsData && blogsData?.blogs[0] &&
                     <VerticalCard
                     key={0}
                     blog={blogsData?.blogs[0]}
                     height="480"
+                  
                     ></VerticalCard>
               }
                     </Box>
           </Grid>
-          <Grid item xs={12} md={7}>
-            <Grid container spacing={2}>
-                {blogsData?.blogs?.slice(1).map((blog, index) => (
+          <Grid item xs={12} md={8}>
+            <Grid container >
+                {!isLoading && blogsData?.blogs?.length>0 ? blogsData?.blogs?.slice(1).map((blog, index) => (
                 <Grid item xs={12} md={6} key={index} mt={1}>
                     <VerticalCard
                     key={index}
@@ -80,7 +82,7 @@ const CategoriesPost = () => {
                     height="200"
                     ></VerticalCard>
                 </Grid>
-                ))}
+                )):<CustomNoRowsOverlay/>}
             </Grid>
           </Grid>
           </Grid>

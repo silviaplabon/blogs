@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = { 
-    selectedCalegory:{value:"",label:''}
+    selectedCategory:{value:"",label:''},
+    title:''
 };
 
 const BlogSlice = createSlice({
@@ -10,9 +11,12 @@ const BlogSlice = createSlice({
     reducers: {
          AddUserSelectedCategory: (state, action) => {
             state.selectedCategory = action.payload.selectedCategory;
+        },
+        AddSearchText:(state,action)=>{
+             state.title=action.payload.title;
         }
     },
 });
 
-export const {AddUserSelectedCategory } = BlogSlice.actions;
+export const {AddUserSelectedCategory,AddSearchText } = BlogSlice.actions;
 export default BlogSlice.reducer;

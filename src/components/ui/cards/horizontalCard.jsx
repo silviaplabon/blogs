@@ -3,7 +3,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
-import { Avatar, Box, Grid } from "@mui/material";
+import { Avatar, Box, Button, Grid } from "@mui/material";
 import {makeStyles } from '@material-ui/core';
 import { MdPunchClock } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -58,7 +58,7 @@ const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
           <Typography sx={{ border: "1px solid white",width:'100px',height:'0px',marginLeft:'10px' }}></Typography>
         </Box>
 
-        <Grid items xs={12} md={4}>
+        <Grid item xs={12} md={4}>
           <CardMedia
             component="img"
             height={height}
@@ -66,12 +66,12 @@ const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
               alt={blog?.title}
           />
         </Grid>
-        <Grid items xs={12} md={8}>
+        <Grid item xs={12} md={8}>
           <CardContent sx={{paddingY:0,marginY:0,paddingRight:0}}>
             <Box sx={{ display:isMinifiedVersion?'none':'flex' }}>
               <Avatar
                 alt="Remy Sharp"
-                src="https://a.storyblok.com/f/191576/1200x800/215e59568f/round_profil_picture_after_.webp"
+                src={blog?.profileImage}
               />
               <Typography
                 variant="h6"
@@ -85,7 +85,7 @@ const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
                   marginLeft: "10px",
                 }}
               >
-                By Celine Dee .EUROPE
+                By {blog?.userName}
               </Typography>
             </Box>
             <Typography variant="h5" mt={isMinifiedVersion?0:1} sx={{fontSize:isMinifiedVersion?'12px':'16px'}}>
@@ -102,7 +102,18 @@ const HorizontalCard = ({ blog,isMinifiedVersion,height}) => {
           </Typography> */}
 
             </Box>
+            {
+              !isMinifiedVersion && 
+          <Button
+            variant="outlined"
+            mb={1}
+            sx={{ borderRadius: "20px!important" }}
+          >
+            {blog?.category}
+          </Button>
+            }
           </CardContent>
+
           <CardActions
             disableSpacing
             sx={{

@@ -30,7 +30,7 @@ export const categories = [
         { value: "Healthy Eating", label: "Healthy Eating" },
         { value: "International Cuisine", label: "International Cuisine" },
         { value: "Baking", label: "Baking" }
-      ]
+      ] 
     },
     {
       value: "Travel",

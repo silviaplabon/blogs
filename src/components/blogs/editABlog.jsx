@@ -41,6 +41,7 @@ const EditABlog = () => {
   const {
     formState: { errors },
     handleSubmit,
+    setValue,
     control,
   } = useForm({
     defaultValues: {
@@ -53,22 +54,33 @@ const EditABlog = () => {
       email: userDetails?.email,
       userName: userDetails?.name,
       profileImage:userDetails?.profileImage,
-      isEnabledPaidService:blog?.isEnabledPaidService ? blog.isEnabledPaidService:false
+      isEnabledPaidService:blog?.isEnabledPaidService ? blog.isEnabledPaidService:false,
+      _id:id
     },
   });
   useEffect(()=>{
-    const initialContent = blog?.longDescription?blog?.longDescription:''
-    if(initialContent!=""){
-      const ContentBlock = htmlToDraft(initialContent);
-      const contentState = ContentState.createFromBlockArray(
-        ContentBlock.contentBlocks
-      );
-    
-       const  editorState = EditorState.createWithContent(contentState);
-       setRichContent(editorState)
+    if(blog){
+      const initialContent = blog?.longDescription?blog?.longDescription:''
+      if(initialContent!=""){
+        const ContentBlock = htmlToDraft(initialContent);
+        const contentState = ContentState.createFromBlockArray(
+          ContentBlock.contentBlocks
+        );
+        const  editorState = EditorState.createWithContent(contentState);
+        setRichContent(editorState)
+      }
+      if(setValue){
+        setValue('title', blog?.title);
+        setValue('category', blog?.category);
+        setValue('shortDescription', blog?.shortDescription);
+        setValue('longDescription', blog?.longDescription);
+        setValue('featuredImage', blog?.featuredImage);
+        setValue('isEnabledPaidService', blog?.isEnabledPaidService);
+      }
 
     }
   },[blog])
+
 
 
   const onSubmit = (data) => {
@@ -84,7 +96,6 @@ const EditABlog = () => {
       finalContent = "";
     }
     data.longDescription = finalContent;
-    console.log(data);
     updateBlog(data);
   };
   if (isSuccess) {
@@ -96,7 +107,7 @@ const EditABlog = () => {
   } else {
     return (
       <>
-        <SearchAppBar></SearchAppBar>
+        <SearchAppBar  showSearchBar={false}  showCategories={false}></SearchAppBar>
         <Container>
           <Typography variant="h4">Edit A BLOG</Typography>
           <form onSubmit={handleSubmit(onSubmit)}>

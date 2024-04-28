@@ -15,7 +15,7 @@ const ProductCard=({ product })=> {
     dispatch(addProductsInCarts(product))
   };
   const data=useSelector(state=>state.carts);
-  console.log(data);
+
   
   return (
     <Card sx={{  position: "relative" }}>

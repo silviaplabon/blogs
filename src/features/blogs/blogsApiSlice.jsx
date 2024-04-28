@@ -4,14 +4,16 @@ export const blogsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllBlogs: builder.query({
       query: (data) => {
-        if (data.category) {
-          return `/blogs/?userId=${data.userId}&category=${data.category}&page=${data.page}&limit=${data.limit}`;
-        } else {
-          return `/blogs/?userId=${data.userId}&page=${data.page}&limit=${data.limit}`;
+        if (data.userId) {
+          if (data.category) {
+            return `/blogs/?userId=${data.userId}&category=${data.category}&page=${data.page}&limit=${data.limit}`;
+          } else {
+            return `/blogs/?userId=${data.userId}&page=${data.page}&limit=${data.limit}`;
+          }
         }
       },
       keepUnusedDataFor: 600,
-      providedTags: ["BlogsByUser"],
+      providesTags: ["BlogsByUser"],
       transformResponse: (response) => {
         return response.data;
       },
@@ -25,7 +27,17 @@ export const blogsApi = apiSlice.injectEndpoints({
         }
       },
       keepUnusedDataFor: 600,
-      providedTags: ["BlogsByTabs"],
+      providesTags: ["BlogsByTabs"],
+      transformResponse: (response) => {
+        return response.data;
+      },
+    }),
+    getAllBlogsBySearch: builder.query({
+      query: (data) => {
+          return `/blogs/search?title=${data.title}&category=${data.category}&page=${data.page}&limit=${data.limit}`;
+      },
+      keepUnusedDataFor: 600,
+      providesTags: ["BlogsBySearch"],
       transformResponse: (response) => {
         return response.data;
       },
@@ -41,7 +53,7 @@ export const blogsApi = apiSlice.injectEndpoints({
         }
       },
       keepUnusedDataFor: 600,
-      providedTags: ["BlogsByRando"],
+      providesTags: ["BlogsByRandom"],
       transformResponse: (response) => {
         return response.data;
       },
@@ -51,7 +63,6 @@ export const blogsApi = apiSlice.injectEndpoints({
       query: (blogId) => `/blogs/${blogId}`,
       providesTags: (result, error, arg) => [{ type: "Blog", id: arg }],
       transformResponse: (response) => {
-        console.log(response.data, "response");
         return response.data;
       },
     }),
@@ -59,7 +70,6 @@ export const blogsApi = apiSlice.injectEndpoints({
       query: (blogId) => `/blogs/comments/${blogId}`,
       providesTags: (result, error, arg) => [{ type: "Comments", id: arg }],
       transformResponse: (response) => {
-        console.log(response.data, "response");
         return response.data;
       },
     }),
@@ -73,16 +83,13 @@ export const blogsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          console.log(result, ":result");
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       },
-      invalidatedTags: ["BlogsByUser"],
+      invalidatesTags: ["BlogsByUser"],
     }),
     updateABlog: builder.mutation({
       query: (data) => ({
-        url: "/blogs/:id",
+        url: `/blogs/${data._id}`,
         method: "PATCH",
         body: data,
       }),
@@ -90,12 +97,23 @@ export const blogsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          console.log(result, ":result");
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       },
-      invalidatedTags: ["BlogsByUser"],
+      invalidatesTags: ["BlogsByUser", "BlogsByTabs", "BlogsByRandom"],
+    }),
+    deleteABlog: builder.mutation({
+      query: (data) => ({
+        url: `/blogs/${data._id}/deleteABlog`,
+        method: "DELETE",
+        body: data,
+      }),
+
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const result = await queryFulfilled;
+        } catch (err) {}
+      },
+      invalidatesTags: ["BlogsByUser", "BlogsByTabs", "BlogsByRandom"],
     }),
     addAReview: builder.mutation({
       query: (data) => ({
@@ -107,10 +125,7 @@ export const blogsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          console.log(result, ":result");
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       },
     }),
     addAReaction: builder.mutation({
@@ -123,10 +138,7 @@ export const blogsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          console.log(result, ":result");
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       },
     }),
     addAComment: builder.mutation({
@@ -140,10 +152,7 @@ export const blogsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          console.log(result, ":result");
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       },
     }),
     deleteAComment: builder.mutation({
@@ -157,10 +166,7 @@ export const blogsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          console.log(result, ":result");
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       },
     }),
     updateAComment: builder.mutation({
@@ -174,10 +180,7 @@ export const blogsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          console.log(result, ":result");
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       },
     }),
   }),
@@ -194,6 +197,8 @@ export const {
   useUpdateABlogMutation,
   useAddACommentMutation,
   useGetBlogCommentsQuery,
+  useDeleteABlogMutation,
   useDeleteACommentMutation,
-  useUpdateACommentMutation
+  useUpdateACommentMutation,
+  useGetAllBlogsBySearchQuery
 } = blogsApi;
